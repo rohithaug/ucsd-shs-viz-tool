@@ -8,17 +8,27 @@ const { config } = require("./config");
 // REQUIRE EXPRESS APP
 const app = require("./config/express")();
 
+// REQUIRE MONGODB CONNECTION
+const connectToMongoDB = require("./config/mongoose");
+
 let server;
 
 async function startApp() {
-    // APP LISTEN
-    server = app.get("server").listen(config.port, config.hostname, () => {
-        console.log(
-        `${new Date().toISOString()} ${config.app.title} started on ${
-            config.hostname
-        }:${config.port} in ${process.env.NODE_ENV} mode`
-        );
-    });
+    try {
+        // Connect to MongoDB
+        await connectToMongoDB();
+    
+        // APP LISTEN
+        server = app.get("server").listen(config.port, config.hostname, () => {
+            console.log(
+            `${new Date().toISOString()} ${config.app.title} started on ${
+                config.hostname
+            }:${config.port} in ${process.env.NODE_ENV} mode`
+            );
+        });
+    } catch (error) {
+          console.error("Error connecting to MongoDB:", error);
+    }
 }
 startApp();
 
