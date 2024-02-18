@@ -47,8 +47,8 @@ const blogSchema = mongoose.Schema(
  * @param {ObjectId} blogMongoId - The blog Mongo ID to exclude from the check.
  * @returns {Promise<boolean>} A promise that resolves to a boolean indicating whether the blog ID is taken (true) or not (false).
  */
-blogSchema.statics.isBlogIdTaken = async function (email, excludeBlogMongoId) {
-    const blog = await this.findOne({ email, _id: { $ne: excludeBlogMongoId }  });
+blogSchema.statics.isBlogIdTaken = async function (blogId, excludeBlogMongoId) {
+    const blog = await this.findOne({ blogId, _id: { $ne: excludeBlogMongoId }  });
     return !!blog;
 };
 
