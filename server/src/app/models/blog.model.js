@@ -38,6 +38,20 @@ const blogSchema = mongoose.Schema(
     }
 )
 
+/**
+ * Checks if an ID is already taken by an existing blog, excluding a specified blog.
+ *
+ * @static
+ * @memberof Blog
+ * @param {string} blogId - The blog ID to check.
+ * @param {ObjectId} blogMongoId - The blog Mongo ID to exclude from the check.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating whether the blog ID is taken (true) or not (false).
+ */
+blogSchema.statics.isBlogIdTaken = async function (email, excludeBlogMongoId) {
+    const blog = await this.findOne({ email, _id: { $ne: excludeBlogMongoId }  });
+    return !!blog;
+};
+
 // add plugin that converts mongoose to json
 blogSchema.plugin(toJson);
 
