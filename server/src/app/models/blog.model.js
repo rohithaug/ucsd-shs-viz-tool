@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 // REQUIRE PLUGINS
 const { toJson } = require('./plugins');
 
-const blogSchema = mongoose.Schema(
+const blogSchema = new mongoose.Schema(
     {
         blogId: {
             type: String,
