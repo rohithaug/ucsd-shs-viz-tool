@@ -13,7 +13,7 @@ const Navbar = () => {
             <Image src={ucsdLogo} alt="Logo" className="w-auto h-6" />
         </div>
         
-        <hr className="border-t border-custom-blue mx-12" />
+        <hr className="border-t border-[#6DE4EA] mx-12" />
     </nav>
   );
 };
