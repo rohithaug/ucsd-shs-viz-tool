@@ -104,8 +104,6 @@ const Page = () => {
 
                     <Image src={blogSample} alt="Blog Image" className="mb-4 h-auto max-w-full" />
 
-                    {/* TODO: Remove this line */}
-                    <p>Post: {router.query.slug}</p>
                     <p className="mb-8 text-justify text-gray-500 whitespace-pre-line">
                         {postDetails.content}
                     </p>
