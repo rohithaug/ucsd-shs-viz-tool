@@ -8,6 +8,9 @@ const { blogController } = require("../../controllers");
 // CREATE REQUEST FOR BLOG
 router.post("/", blogController.createBlog);
 
+// GET REQUEST FOR BLOG IMAGE
+router.get("/image", blogController.getBlogImage);
+
 // GET REQUEST FOR BLOG
 router.get("/:blogId", blogController.getBlog);
 
