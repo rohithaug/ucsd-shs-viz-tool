@@ -1,4 +1,6 @@
 // REQUIRE PACKAGES
+const fs = require('fs');
+const path = require('path');
 const httpStatus = require('http-status');
 
 // REQUIRE SERVICES
@@ -43,6 +45,29 @@ const getBlog = catchAsync(async (req, res) => {
 });
 
 /**
+ * Get blog image for the given ID.
+ *
+ * @function
+ * @async
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>} Promise that resolves with blog image.
+ * @throws {Error} If there is an issue getting blog image or sending the response.
+ */
+const getBlogImage = catchAsync(async (req, res) => {
+    const imageFileName = req.query.fileName;
+    const filepath = path.join(__dirname, '..', '..', 'assets', 'images', 'blog', imageFileName);
+
+    fs.access(filepath, fs.constants.F_OK, (err) => {
+        if (err) {
+            res.status(httpStatus.NOT_FOUND).send('Blog image not found');
+        }
+
+        res.sendFile(filepath);
+    });
+});
+
+/**
  * Updates an existing blog details based on the request parameters and body.
  *
  * @function
@@ -75,6 +100,7 @@ const deleteBlog = catchAsync(async (req, res) => {
 module.exports = {
     createBlog,
     getBlog,
+    getBlogImage,
     updateBlog,
     deleteBlog
 };
