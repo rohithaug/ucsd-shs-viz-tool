@@ -1,3 +1,4 @@
 module.exports = {
-    blogService: require('./blog.service')
+    blogService: require('./blog.service'),
+    trackerService: require('./tracker.service')
 }
