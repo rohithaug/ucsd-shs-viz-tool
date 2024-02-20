@@ -28,7 +28,7 @@ const blogSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        imageName: {
+        imageFileName: {
             type: String,
             required: true
         }
