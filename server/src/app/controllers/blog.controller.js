@@ -97,10 +97,30 @@ const deleteBlog = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send();
 });
 
+/**
+ * Get details of all blogs.
+ *
+ * @function
+ * @async
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>} Promise that resolves with blog details.
+ * @throws {Error} If there is an issue getting blog details or sending the response.
+ */
+const getAllBlogs = catchAsync(async (req, res) => {
+    const blogs = await blogService.getAllBlogs();
+    if (!blogs) {
+        res.status(httpStatus.BAD_REQUEST).send('Error in getting posts in bulk!');
+    } else {
+        res.status(httpStatus.OK).send(blogs);
+    }
+});
+
 module.exports = {
     createBlog,
     getBlog,
     getBlogImage,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    getAllBlogs
 };
