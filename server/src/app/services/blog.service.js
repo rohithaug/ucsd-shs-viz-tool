@@ -40,6 +40,17 @@ const getBlog = async (blogId) => {
 };
 
 /**
+ * Get all blogs
+ * 
+ * @function
+ * @async
+ * @returns {Promise<user>} - Promise that resolved to the retrieved blogs.
+ */
+const getAllBlogs = async () => {
+    return blogModel.find();
+};
+
+/**
  * Update blog details by ID
  * 
  * @function
@@ -88,6 +99,7 @@ const deleteBlog = async (blogId) => {
 module.exports = {
     createBlog,
     getBlog,
+    getAllBlogs,
     updateBlog,
     deleteBlog
 };

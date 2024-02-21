@@ -11,6 +11,9 @@ router.post("/", blogController.createBlog);
 // GET REQUEST FOR BLOG IMAGE
 router.get("/image", blogController.getBlogImage);
 
+// GET REQUEST FOR ALL BLOGS
+router.get("/bulk", blogController.getAllBlogs);
+
 // GET REQUEST FOR BLOG
 router.get("/:blogId", blogController.getBlog);
 
