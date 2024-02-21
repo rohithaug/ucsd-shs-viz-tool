@@ -14,7 +14,7 @@ const apiError = require('../utils/apiError');
  * @async
  * @param {Object} blogBody - The data for creating a new blog.
  * @returns {Promise<user>} A promise that resolves to the created blog.
- * @throws {apiError} If the email is already taken, returns a 400 Bad Request error.
+ * @throws {apiError} If the blog ID is already taken, returns a 400 Bad Request error.
  */
 const createBlog = async (blogBody) => {
     if (await blogModel.isBlogIdTaken(blogBody.blogId)) {
