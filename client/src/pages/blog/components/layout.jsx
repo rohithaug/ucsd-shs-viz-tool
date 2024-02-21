@@ -9,7 +9,7 @@ export default function BlogLayout({
             {/* Include shared UI here e.g. a header or sidebar */}
             <Navbar />
 
-            <div className="mt-8 mt-8 mx-32">
+            <div className="mt-8 mx-8 lg:mx-32">
                 {children}
             </div>
         </section>
