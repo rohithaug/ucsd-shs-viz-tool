@@ -9,11 +9,11 @@ const trackerSchema = new mongoose.Schema(
         blogId: {
             type: String,
             required: true,
-            unique: true,
             lowercase: true
         },
         sessionId: {
             type: String,
+            unique: true,
             required: true
         },
         source: {
