@@ -100,7 +100,7 @@ export default function Page() {
         for (let i = 0; i < cardsData.length; i += 2) {
             const rowCards = cardsData.slice(i, i + 2);
             const row = (
-                <div key={i} className="grid grid-cols-2 gap-4">
+                <div key={i} className="grid lg:grid-cols-2 gap-4">
                     {rowCards.map((card, index) => (
                         <div key={index} className="flex-1 max-w-fit">
                             <Card {...card} />
