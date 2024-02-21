@@ -16,6 +16,11 @@ const trackerSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        source: {
+            type: String,
+            enum: ['direct', 'email', 'home'],
+            default: 'direct'
+        }
     },
     {
         timestamps: true
