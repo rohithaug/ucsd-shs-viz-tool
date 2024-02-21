@@ -1,6 +1,7 @@
 // IMPORT LIBRARIES
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 
 // IMPORT COMPONENTS
@@ -60,6 +61,23 @@ const Page = () => {
             fetchPostDetails(router.query.slug);
         }
     }, [router.query.slug]);
+
+    // TRACKING API - POST DETAILS
+    useEffect(() => {
+        if (router.query && Object.keys(router.query).length != 0 && router.query.slug) {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/track/visit`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // content type of the request body
+                },
+                body: JSON.stringify({
+                    blogId: router.query.slug,
+                    sessionId: uuidv4(), // assign unique ID whenever a new tab is opened
+                    source: router.query.source || "direct"
+                })
+            });
+        }
+    }, [router.query]);
 
     if (postDetailsFetchLoading) {
         return (
