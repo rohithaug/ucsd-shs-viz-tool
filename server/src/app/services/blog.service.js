@@ -36,7 +36,7 @@ const createBlog = async (blogBody) => {
  * @returns {Promise<user>} - Promise that resolved to the retrieved blog.
  */
 const getBlog = async (blogId) => {
-    return blogModel.findOne({ blogId });
+    return await blogModel.findOne({ blogId });
 };
 
 /**
@@ -47,7 +47,7 @@ const getBlog = async (blogId) => {
  * @returns {Promise<user>} - Promise that resolved to the retrieved blogs.
  */
 const getAllBlogs = async () => {
-    return blogModel.find();
+    return await blogModel.find();
 };
 
 /**

@@ -6,6 +6,7 @@ const router = express.Router();
 const { config } = require("../../../config");
 
 // REQUIRE ROUTES
+const analyticsRoutes = require("./analytics.route");
 const blogRoutes = require("./blog.route");
 const trackerRoutes = require("./tracker.route");
 
@@ -17,7 +18,12 @@ module.exports = (app) => {
 
     // BLOG ROUTES
     router.use('/blog', blogRoutes);
+
+    // TRACKER ROUTES
     router.use('/track', trackerRoutes);
+
+    // ANALYTICS ROUTES
+    router.use('/analytics', analyticsRoutes);
 
     // REGISTER API ROUTES
     app.use(`${config.api.basePath}`, router);
