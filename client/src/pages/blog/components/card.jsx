@@ -1,15 +1,45 @@
 // IMPORT COMPONENTS
-import React from 'react';
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react';
 
-//IMPORT ICONS
-import blogSample from '../../../assets/images/caps-be-kind-to-mind-and-body.png';
+const Card = ({ blogId, title, author, category, time, content, imageFileName }) => {
+    const [blogImageSource, setBlogImageSource] = useState(null);
+    const [blogImageFetchLoading, setBlogImageFetchLoading] = useState(true);
+    const [blogImageFetchError, setBlogImageFetchError] = useState(false);
 
-const Card = ({ blogId, title, author, category, time, content }) => {
+    const fetchBlogImage = async () => {
+        try {
+            setBlogImageFetchLoading(true);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/blog/image?fileName=${imageFileName}`);
+            if (response.ok) {
+                const blob = await response.blob();
+                const imageFileName = URL.createObjectURL(blob);
+                setBlogImageSource(imageFileName);
+            } else {
+                setBlogImageFetchError(true);
+            }
+        } catch (error) {
+            setBlogImageFetchError(true);
+        } finally {
+            setBlogImageFetchLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (imageFileName) {
+            fetchBlogImage();
+        }
+    }, [imageFileName]);
+
     return (
         <div className="flex-1 max-w bg-white border rounded-lg mx-4 mb-4">
             <a href={`/blog/${blogId || ""}?source=home`}>
-                <Image src={blogSample} className="rounded-t-lg" alt="" />
+                {blogImageFetchLoading ? (
+                    <div className="rounded-t-lg bg-gray-300 w-full animate-pulse" />
+                ) : blogImageFetchError ? (
+                    <div className="rounded-t-lg bg-red-500 w-full">Error loading image</div>
+                ) : (
+                    <img src={blogImageSource} className="rounded-t-lg w-full object-cover" alt="" />
+                )}
             </a>
             <div className="p-5">
                 <div className="flex items-center justify-between mb-2">
@@ -26,7 +56,7 @@ const Card = ({ blogId, title, author, category, time, content }) => {
                 <a href={`/blog/${blogId || ""}?source=home`} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                     Read more
                     <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                     </svg>
                 </a>
             </div>
