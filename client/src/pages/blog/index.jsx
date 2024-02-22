@@ -122,7 +122,7 @@ export default function Page() {
         {
             renderCategories(blogData).map(({ category, cardsData }, index) => {
                 return (
-                  <div>
+                  <div key={`category-index-${index}`}>
                     <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">{category}</h1>
                     <div className="w-full">
                       {renderCardRows(cardsData)}
