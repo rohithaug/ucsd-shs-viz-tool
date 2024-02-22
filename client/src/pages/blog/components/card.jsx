@@ -34,11 +34,11 @@ const Card = ({ blogId, title, author, category, time, content, imageFileName })
         <div className="flex-1 max-w bg-white border rounded-lg mx-4 mb-4">
             <a href={`/blog/${blogId || ""}?source=home`}>
                 {blogImageFetchLoading ? (
-                    <div className="rounded-t-lg bg-gray-300 w-full h-48 animate-pulse" />
+                    <div className="rounded-t-lg bg-gray-300 w-full animate-pulse" />
                 ) : blogImageFetchError ? (
-                    <div className="rounded-t-lg bg-red-500 w-full h-48">Error loading image</div>
+                    <div className="rounded-t-lg bg-red-500 w-full">Error loading image</div>
                 ) : (
-                    <img src={blogImageSource} className="rounded-t-lg w-full h-48 object-cover" alt="" />
+                    <img src={blogImageSource} className="rounded-t-lg w-full object-cover" alt="" />
                 )}
             </a>
             <div className="p-5">
