@@ -21,7 +21,7 @@ export default function Page() {
           setBlogDataFetchLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/blog/bulk/`);
             if (!response.ok) {
-                blogDataFetchError(true);
+                setBlogDataFetchError(true);
                 setBlogDataFetchLoading(false);
             } else {
                 const blogData = await response.json();
