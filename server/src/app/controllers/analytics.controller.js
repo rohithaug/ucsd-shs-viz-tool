@@ -20,7 +20,10 @@ const catchAsync = require('../utils/catchAsync');
 const getMetrics = catchAsync(async (req, res) => {
     const metrics = await analyticsService.getMetrics();
     if (!metrics) {
-        res.status(httpStatus.BAD_REQUEST).send('Error in getting dashboard metrics');
+        res.status(httpStatus.BAD_REQUEST).send({
+            message: 'Error fetching dashboard metrics',
+            description: 'Unexpected server error in getting metrics for dashboard. If the issue persists contact the system administrator'           
+        });
     } else {
         res.status(httpStatus.OK).send(metrics);
     }

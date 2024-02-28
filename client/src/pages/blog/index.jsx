@@ -14,6 +14,7 @@ export default function Page() {
     const [blogData, setBlogData] = useState(null);
     const [blogDataFetchLoading, setBlogDataFetchLoading] = useState(true);
     const [blogDataFetchError, setBlogDataFetchError] = useState(false);
+    const [blogDataFetchErrorDetails, setBlogDataFetchErrorDetails] = useState(null);
 
     // Function to fetch blog data from API
     const fetchBlogDataDetails = async () => {
@@ -21,7 +22,13 @@ export default function Page() {
           setBlogDataFetchLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/blog/bulk/`);
             if (!response.ok) {
-                blogDataFetchError(true);
+                const errorDetails = await response.json();
+                setBlogDataFetchErrorDetails({
+                    statusCode: response.status,
+                    errorMessage: errorDetails?.message || errorDetails || "",
+                    errorDescription: errorDetails?.description || "",
+                });
+                setBlogDataFetchError(true);
                 setBlogDataFetchLoading(false);
             } else {
                 const blogData = await response.json();
@@ -36,6 +43,11 @@ export default function Page() {
                 setBlogDataFetchLoading(false);
             }
         } catch (error) {
+            setBlogDataFetchErrorDetails({
+                statusCode: 400,
+                errorMessage: "Unexpected Client Error",
+                errorDescription: "",
+            });
             setBlogDataFetchError(true);
             setBlogDataFetchLoading(false);
         }
@@ -64,8 +76,8 @@ export default function Page() {
   if (blogDataFetchError) {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1 className="text-4xl font-bold text-gray-900">404: Page Not Found</h1>
-            <p className="mt-4 text-lg text-gray-600">The requested page does not exist.</p>
+            <h1 className="text-4xl font-bold text-gray-900">{blogDataFetchErrorDetails.statusCode}: {blogDataFetchErrorDetails.errorMessage}</h1>
+            <p className="mt-4 text-lg text-gray-600">{blogDataFetchErrorDetails.errorDescription}</p>
             <button 
                 onClick={() => router.push('/blog')} 
                 className="mt-8 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
