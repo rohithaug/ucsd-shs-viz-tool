@@ -11,6 +11,7 @@ export default function Page() {
     const [dashboardMetrics, setDashboardMetrics] = useState(null);
     const [dashboardMetricsFetchLoading, setDashboardMetricsFetchLoading] = useState(true);
     const [dashboardMetricsFetchError, setDashboardMetricsFetchError] = useState(false);
+    const [dashboardMetricsFetchErrorDetails, setDashboardMetricsFetchErrorDetails] = useState(null);
 
     // Function to fetch dashboard data from API
     const fetchDashboardMetricsData = async () => {
@@ -18,6 +19,12 @@ export default function Page() {
             setDashboardMetricsFetchLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analytics/metrics/`);
             if (!response.ok) {
+                const errorDetails = await response.json();
+                setDashboardMetricsFetchErrorDetails({
+                    statusCode: response.status,
+                    errorMessage: errorDetails?.message || errorDetails || "",
+                    errorDescription: errorDetails?.description || "",
+                });
                 setDashboardMetricsFetchError(true);
                 setDashboardMetricsFetchLoading(false);
             } else {
@@ -27,6 +34,11 @@ export default function Page() {
                 setDashboardMetricsFetchLoading(false);
             }
         } catch (error) {
+            setDashboardMetricsFetchErrorDetails({
+                statusCode: 400,
+                errorMessage: "Unexpected Client Error",
+                errorDescription: "",
+            });
             setDashboardMetricsFetchError(true);
             setDashboardMetricsFetchLoading(false);
         }
@@ -55,8 +67,8 @@ export default function Page() {
     if (dashboardMetricsFetchError) {
       return (
           <div className="flex flex-col items-center justify-center min-h-screen">
-              <h1 className="text-4xl font-bold text-gray-900">400: Error fetching info from server</h1>
-              <p className="mt-4 text-lg text-gray-600">Refresh page and try again, if issue persists contact the system adminstrator.</p>
+              <h1 className="text-4xl font-bold text-gray-900">{dashboardMetricsFetchErrorDetails.statusCode}: {dashboardMetricsFetchErrorDetails.errorMessage}</h1>
+              <p className="mt-4 text-lg text-gray-600">{dashboardMetricsFetchErrorDetails.errorDescription}</p>
               <button 
                   onClick={() => router.push('/dashboard')} 
                   className="mt-8 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"

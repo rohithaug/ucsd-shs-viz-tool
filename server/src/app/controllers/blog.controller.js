@@ -38,7 +38,10 @@ const createBlog = catchAsync(async (req, res) => {
 const getBlog = catchAsync(async (req, res) => {
     const blog = await blogService.getBlog(req.params.blogId);
     if (!blog) {
-        res.status(httpStatus.NOT_FOUND).send('Blog not found');
+        res.status(httpStatus.NOT_FOUND).send({
+            message: 'Blog not found',
+            description: 'The requested page does not exist.'           
+        });
     } else {
         res.status(httpStatus.OK).send(blog);
     }
@@ -110,7 +113,10 @@ const deleteBlog = catchAsync(async (req, res) => {
 const getAllBlogs = catchAsync(async (req, res) => {
     const blogs = await blogService.getAllBlogs();
     if (!blogs) {
-        res.status(httpStatus.BAD_REQUEST).send('Error in getting posts in bulk!');
+        res.status(httpStatus.BAD_REQUEST).send({
+            message: 'Blog details not found',
+            description: 'Unexpected server error in getting posts in bulk. If the issue persists contact the system administrator'           
+        });
     } else {
         res.status(httpStatus.OK).send(blogs);
     }

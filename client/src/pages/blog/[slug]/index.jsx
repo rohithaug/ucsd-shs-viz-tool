@@ -14,6 +14,7 @@ const Page = () => {
     const [postDetails, setPostDetails] = useState(null);
     const [postDetailsFetchLoading, setPostDetailsFetchLoading] = useState(true);
     const [postDetailsFetchError, setPostDetailsFetchError] = useState(false);
+    const [postDetailsFetchErrorDetails, setPostDetailsFetchErrorDetails] = useState(null);
 
     const [blogImageSource, setBlogImageSource] = useState(null);
     const [blogImageFetchLoading, setblogImageFetchLoading] = useState(true);
@@ -24,6 +25,12 @@ const Page = () => {
             setPostDetailsFetchLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/blog/${slug}`);
             if (!response.ok) {
+                const errorDetails = await response.json();
+                setPostDetailsFetchErrorDetails({
+                    statusCode: response.status,
+                    errorMessage: errorDetails?.message || errorDetails || "",
+                    errorDescription: errorDetails?.description || "",
+                });
                 setPostDetailsFetchError(true);
                 setPostDetailsFetchLoading(false);
             } else {
@@ -51,6 +58,11 @@ const Page = () => {
                 }
             }
         } catch (error) {
+            setPostDetailsFetchErrorDetails({
+                statusCode: 400,
+                errorMessage: "Unexpected Client Error",
+                errorDescription: "",
+            });
             setPostDetailsFetchError(true);
             setPostDetailsFetchLoading(false);
         }
@@ -75,6 +87,16 @@ const Page = () => {
                     sessionId: uuidv4(), // assign unique ID whenever a new tab is opened
                     source: router.query.source || "direct"
                 })
+            }).then((response) => {
+                if (response.ok) {
+                    return Promise.reject(response);
+                }
+            })
+            .then(() => {
+                // do nothing
+            })
+            .catch(() => {
+                // do nothing
             });
         }
     }, [router.query]);
@@ -98,8 +120,8 @@ const Page = () => {
     if (postDetailsFetchError) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen">
-                <h1 className="text-4xl font-bold text-gray-900">404: Page Not Found</h1>
-                <p className="mt-4 text-lg text-gray-600">The requested page does not exist.</p>
+                <h1 className="text-4xl font-bold text-gray-900">{postDetailsFetchErrorDetails.statusCode}: {postDetailsFetchErrorDetails.errorMessage}</h1>
+                <p className="mt-4 text-lg text-gray-600">{postDetailsFetchErrorDetails.errorDescription}</p>
                 <button 
                     onClick={() => router.push('/blog')} 
                     className="mt-8 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
