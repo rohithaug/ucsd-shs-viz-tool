@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 // IMPORT COMPONENTS
 import Layout from './components/layout';
+import BarChart from './components/charts/barChart';
  
 export default function Page() {
     const router = useRouter();
@@ -80,9 +81,20 @@ export default function Page() {
     }
 
     return (
-        <h1>Hello, Dashboard Home Page!
-            <p>{JSON.stringify(dashboardMetrics)}</p>
-        </h1>
+        <div>
+            {dashboardMetrics && dashboardMetrics.uniqueVisit ?
+                <div>
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
+                    <BarChart 
+                        title="Unique visits to each blog page"
+                        labels={dashboardMetrics?.uniqueVisit?.map(post => post?.blogId)}
+                        datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.map(post => post?.count) }]}
+                    />
+                </div>
+                :
+                <></>
+            }
+        </div>
     )
 }
  
