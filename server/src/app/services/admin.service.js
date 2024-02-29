@@ -75,7 +75,6 @@ const signInAdmin = async (adminBody) => {
         throw new apiError(httpStatus.NOT_FOUND, "Admin not found");
     } else {
         return {
-            adminId: admin.adminId,
             email: admin.email,
             name: admin.name,
             token: getToken(admin)
