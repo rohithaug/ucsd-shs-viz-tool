@@ -1,6 +1,7 @@
 // REQUIRE PACKAGES
 const httpStatus = require('http-status');
 
+
 // REQUIRE MODELS
 const { adminModel } = require('../models');
 
@@ -23,10 +24,13 @@ const createAdmin = async (adminBody) => {
     if (await adminModel.isAdminIdTaken(adminBody.adminId)) {
         throw new apiError(httpStatus.BAD_REQUEST, "Admin ID already taken");
     }
-    const admin = await adminModel.create(adminBody);
-    await admin.save();
-
-    return admin;
+    try {
+        const admin = await adminModel.create(adminBody);
+        await admin.save();
+        return admin;
+    } catch (error) {
+        throw new apiError(httpStatus.BAD_REQUEST, "Error creating admin");
+    }
 };
 
 /**
@@ -40,15 +44,17 @@ const createAdmin = async (adminBody) => {
  * @throws {Error} If there is an issue validating admin or sending the response.
  */
 
-const validateAdmin = async (adminBody, res) => {
-    const admin = await adminModel
-        .findOne({ email: adminBody.email, password: adminBody.password });
-
-    if (!admin) {
-        throw new apiError(httpStatus.NOT_FOUND, "Admin not found");
+const validateAdmin = async (adminBody) => {
+    try {
+        const admin = await adminModel.findOne({ email: adminBody.email, password: adminBody.password });
+        // Check if admin is not undefined
+        if (!admin) {
+            throw new apiError(httpStatus.NOT_FOUND, "Admin not found");
+        }
+        return admin;
+    } catch (error) {
+        throw new apiError(httpStatus.BAD_REQUEST, "Error validating admin");
     }
-
-    return admin;
 };
 
 /**

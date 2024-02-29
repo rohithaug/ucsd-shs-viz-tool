@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 const isAuth = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
+    const authorizationHeader = req.headers?.authorization || '';
+    const token = authorizationHeader.split(' ')[1];
     if (!token) {
         return res.status(403).send({
-            message: 'No token provided!',
+            message: 'Forbidden Access!',
         });
     }
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
