@@ -77,6 +77,46 @@ const updateBlog = async (blogId, updatedBlogBody) => {
 };
 
 /**
+ * Like blog by ID
+ * 
+ * @function
+ * @async
+ * @param {string} blogId - The blog's ID
+ * @returns {Promise<user>} - Promise that resolved to the updated blog.
+ * @throws {apiError} If the blog is not found or the blog ID is already taken, returns a 404 Not Found or 400 Bad Request error, respectively.
+ */
+const likeBlog = async (blogId) => {
+    const blog = await getBlog(blogId);
+
+    if (!blog) {
+        throw new apiError(httpStatus.NOT_FOUND, 'Blog not found');
+    }
+    blog.likes += 1;
+    await blog.save();
+    return blog;
+};
+
+/**
+ * Dislike blog by ID
+ * 
+ * @function
+ * @async
+ * @param {string} blogId - The blog's ID
+ * @returns {Promise<user>} - Promise that resolved to the updated blog.
+ * @throws {apiError} If the blog is not found or the blog ID is already taken, returns a 404 Not Found or 400 Bad Request error, respectively.
+ */
+const dislikeBlog = async (blogId) => {
+    const blog = await getBlog(blogId);
+
+    if (!blog) {
+        throw new apiError(httpStatus.NOT_FOUND, 'Blog not found');
+    }
+    blog.dislikes += 1;
+    await blog.save();
+    return blog;
+};
+
+/**
  * Delete blog details by ID
  * 
  * @function
@@ -101,5 +141,7 @@ module.exports = {
     getBlog,
     getAllBlogs,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    likeBlog,
+    dislikeBlog
 };
