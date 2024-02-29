@@ -9,6 +9,7 @@ const { config } = require("../../../config");
 const analyticsRoutes = require("./analytics.route");
 const blogRoutes = require("./blog.route");
 const trackerRoutes = require("./tracker.route");
+const adminRoutes = require("./admin.route");
 
 module.exports = (app) => {
     // BASE URI
@@ -24,6 +25,9 @@ module.exports = (app) => {
 
     // ANALYTICS ROUTES
     router.use('/analytics', analyticsRoutes);
+
+    // ADMIN ROUTES
+    router.use('/admin', adminRoutes);
 
     // REGISTER API ROUTES
     app.use(`${config.api.basePath}`, router);
