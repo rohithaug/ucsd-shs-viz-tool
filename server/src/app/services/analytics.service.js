@@ -4,6 +4,9 @@ const httpStatus = require('http-status');
 // REQUIRE MODELS
 const { trackerModel } = require('../models');
 
+// REQUIRE SERVICES
+const { getAllBlogsIdAndCategory } = require('./blog.service');
+
 // REQUIRE UTILS
 const apiError = require('../utils/apiError');
 
@@ -18,38 +21,66 @@ const getMetrics = async () => {
     const data = await trackerModel.find();
 
     const metrics = {
-        uniqueVisit: {}, // UNIQUE VISIT TO EACH BLOG PAGE
-        blogSource: {} // SOURCE OF VISIT FOR EACH BLOG PAGE
+        uniqueVisit: {
+            blog: {}, // UNIQUE VISITS TO EACH BLOG PAGE
+            category: {}, // UNIQUE VISITS TO EACH CATEGORY    
+        },
+        source: {
+            consolidated: {}, // CONSOLIDATED SOURCE OF VISITS
+            blog: {} // SOURCE OF VISITS FOR EACH BLOG PAGE
+        }
     }
 
     data.forEach(element => {
         const blogId = element.blogId;
 
-        // UNIQUE VISIT TO EACH BLOG PAGE
-        if (blogId in metrics.uniqueVisit) {
-            metrics.uniqueVisit[blogId] += 1
+        // UNIQUE VISITS TO EACH BLOG PAGE
+        if (blogId in metrics.uniqueVisit.blog) {
+            metrics.uniqueVisit.blog[blogId] += 1
         } else {
-            metrics.uniqueVisit[blogId] = 1
+            metrics.uniqueVisit.blog[blogId] = 1
         }
 
-        // SOURCE OF VISIT FOR EACH BLOG PAGE
         const blogSource = element.source;
-        if (blogId in metrics.blogSource) {
-            if (blogSource in metrics.blogSource[blogId]) {
-                metrics.blogSource[blogId][blogSource] += 1
+        // CONSOLIDATED SOURCE OF VISITS
+        if (blogSource in metrics.source.consolidated) {
+            metrics.source.consolidated[blogSource] += 1
+        } else {
+            metrics.source.consolidated[blogSource] = 1
+        }
+        // SOURCE OF VISITS FOR EACH BLOG PAGE
+        if (blogId in metrics.source.blog) {
+            if (blogSource in metrics.source.blog[blogId]) {
+                metrics.source.blog[blogId][blogSource] += 1
             } else {
-                metrics.blogSource[blogId][blogSource] = 1
+                metrics.source.blog[blogId][blogSource] = 1
             }
         } else {
-            metrics.blogSource[blogId] = {
+            metrics.source.blog[blogId] = {
                 [blogSource]: 1
             }
         }
     });
 
+    const blogDetails = await getAllBlogsIdAndCategory();
+    blogDetails.forEach(({ blogId, category }) => {
+        // CHECK IF BLOG IS IN COUNT
+        if (!(blogId in metrics.uniqueVisit.blog)) {
+            metrics.uniqueVisit.blog[blogId] = 0
+        }
+
+        // UNIQUE VISITS TO EACH CATEGORY
+        if (category in metrics.uniqueVisit.category) {
+            metrics.uniqueVisit.category[category] += metrics.uniqueVisit.blog[blogId]
+        } else {
+            metrics.uniqueVisit.category[category] = metrics.uniqueVisit.blog[blogId]
+        }
+    })
+
     // Convert metrics to array
-    metrics.uniqueVisit = Object.entries(metrics.uniqueVisit).map(([blogId, count]) => ({ blogId, count }));
-    metrics.blogSource = Object.entries(metrics.blogSource).map(([blogId, count]) => ({ blogId, count }));
+    metrics.uniqueVisit.blog = Object.entries(metrics.uniqueVisit.blog).map(([blogId, count]) => ({ blogId, count }));
+    metrics.uniqueVisit.category = Object.entries(metrics.uniqueVisit.category).map(([blogId, count]) => ({ blogId, count }));
+    metrics.source.blog = Object.entries(metrics.source.blog).map(([blogId, count]) => ({ blogId, count }));
 
     return metrics;
 };
