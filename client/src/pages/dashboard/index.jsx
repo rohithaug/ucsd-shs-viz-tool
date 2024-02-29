@@ -72,6 +72,10 @@ export default function Page() {
             </div>
         );
     }
+
+    if (!adminToken) {
+        router.push('/signin');
+    }
   
     if (dashboardMetricsFetchError) {
       return (
@@ -86,10 +90,6 @@ export default function Page() {
               </button>
           </div>
       );
-    }
-
-    if (!adminToken) {
-        router.push('/signin');
     }
 
     return (
