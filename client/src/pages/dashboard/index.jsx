@@ -1,6 +1,7 @@
 // IMPORT LIBRARIES
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Cookie from 'js-cookie';
 
 // IMPORT COMPONENTS
 import Layout from './components/layout';
@@ -8,6 +9,8 @@ import BarChart from './components/charts/barChart';
  
 export default function Page() {
     const router = useRouter();
+
+    const adminToken = Cookie.get('token') || null;
 
     const [dashboardMetrics, setDashboardMetrics] = useState(null);
     const [dashboardMetricsFetchLoading, setDashboardMetricsFetchLoading] = useState(true);
@@ -18,7 +21,12 @@ export default function Page() {
     const fetchDashboardMetricsData = async () => {
         try {
             setDashboardMetricsFetchLoading(true);
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analytics/metrics/`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analytics/metrics/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${adminToken}`,
+                }
+            });
             if (!response.ok) {
                 const errorDetails = await response.json();
                 setDashboardMetricsFetchErrorDetails({
@@ -64,6 +72,10 @@ export default function Page() {
             </div>
         );
     }
+
+    if (!adminToken) {
+        router.push('/signin');
+    }
   
     if (dashboardMetricsFetchError) {
       return (
@@ -71,10 +83,10 @@ export default function Page() {
               <h1 className="text-4xl font-bold text-gray-900">{dashboardMetricsFetchErrorDetails.statusCode}: {dashboardMetricsFetchErrorDetails.errorMessage}</h1>
               <p className="mt-4 text-lg text-gray-600">{dashboardMetricsFetchErrorDetails.errorDescription}</p>
               <button 
-                  onClick={() => router.push('/dashboard')} 
+                  onClick={() => router.push('/signin')} 
                   className="mt-8 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
               >
-                  Refresh
+                  Sign In
               </button>
           </div>
       );
