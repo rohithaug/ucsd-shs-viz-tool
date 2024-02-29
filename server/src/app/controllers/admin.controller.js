@@ -72,9 +72,26 @@ const getAdminName = catchAsync(async (req, res) => {
     }
 });
 
+/**
+ * Given admin email and password, returns admin details along with a token.
+ * 
+ * @function
+ * @async
+ * @name signInAdmin
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>} Promise that resolves with admin details and token.
+ * @throws {Error} If there is an issue signing in admin or sending the response.
+ */
+const signInAdmin = catchAsync(async (req, res) => {
+    const admin = await adminService.signInAdmin(req);
+    return res.status(httpStatus.OK).send(admin);
+});
+
 
 module.exports = {
     createAdmin,
     validateAdmin,
-    getAdminName
+    getAdminName,
+    signInAdmin,
 };

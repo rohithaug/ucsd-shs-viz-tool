@@ -14,4 +14,7 @@ router.post("/validate", adminController.validateAdmin);
 // GET ADMIN NAME
 router.get("/name/:adminId", adminController.getAdminName);
 
+// SIGN IN ADMIN
+router.post("/signin", adminController.signInAdmin);
+
 module.exports = router;

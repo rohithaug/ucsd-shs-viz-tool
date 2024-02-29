@@ -6,6 +6,7 @@ const { adminModel } = require('../models');
 
 // REQUIRE UTILS
 const apiError = require('../utils/apiError');
+const getToken = require('../utils/getToken');
 
 /**
  * Creates a new admin based on the request body.
@@ -66,9 +67,36 @@ const getAdminName = async (adminId) => {
     return admin.name;
 };
 
+/**
+ * Given admin email and hashed password, returns admin details along with a token.
+ * 
+ * @function
+ * @async
+ * @name signInAdmin
+ * @param {Object} adminBody - The data for signing in an admin.
+ * @returns {Promise<String>} Promise that resolves with admin details along with a token.
+ * @throws {Error} If there is an issue signing in admin or sending the response.
+ */
+
+const signInAdmin = async (adminBody) => {
+    const admin = await validateAdmin(adminBody.body);
+
+    if (!admin) {
+        throw new apiError(httpStatus.NOT_FOUND, "Admin not found");
+    } else {
+        return {
+            adminId: admin.adminId,
+            email: admin.email,
+            name: admin.name,
+            token: getToken(admin)
+        };
+    }
+};
+
 
 module.exports = {
     createAdmin,
     validateAdmin,
-    getAdminName
+    getAdminName,
+    signInAdmin
 };
