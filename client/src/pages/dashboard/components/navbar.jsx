@@ -17,8 +17,8 @@ const Navbar = () => {
         </div>
         <hr className="border-t border-[#6DE4EA] mx-12" />
         <div className="flex justify-end">
-            <div className="p-2 rounded-md hover:bg-red-100">
-                <button className="text-red-600 font-semibold" onClick={logout}>Logout</button>
+            <div className="p-2 rounded-md hover:bg-red-100 mx-16">
+                <button className="text-red-600 font-bold" onClick={logout}>Logout</button>
             </div>
         </div>
     </nav>
