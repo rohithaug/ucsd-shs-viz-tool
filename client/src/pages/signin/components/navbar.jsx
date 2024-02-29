@@ -5,9 +5,6 @@ import Image from 'next/image'
 // IMPORT ICONS
 import ucsdLogo from '../../../assets/images/ucsdLogo.png';
 
-// IMPORT UTILS
-import { logout } from '../actions/logout_actions';
-
 const Navbar = () => {
   return (
     <nav className="bg-white">
@@ -15,12 +12,8 @@ const Navbar = () => {
             <h1 className="font-bold text-2xl text-black">STUDENT HEALTH SERVICES</h1>
             <Image src={ucsdLogo} alt="Logo" className="w-auto h-6" />
         </div>
+        
         <hr className="border-t border-[#6DE4EA] mx-12" />
-        <div className="flex justify-end">
-            <div className="p-2 rounded-md hover:bg-red-100">
-                <button className="text-red-600 font-semibold" onClick={logout}>Logout</button>
-            </div>
-        </div>
     </nav>
   );
 };
