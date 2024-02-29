@@ -6,11 +6,6 @@ const { toJson } = require('./plugins');
 
 const adminSchema = new mongoose.Schema(
     {
-        adminId: {
-            type: String,
-            required: true,
-            unique: true,
-        },
         name: {
             type: String,
             required: true,
@@ -33,16 +28,16 @@ const adminSchema = new mongoose.Schema(
 )
 
 /**
- * Checks if an admin ID is already taken by an existing admin, excluding a specified admin.
+ * Checks if an admin email is already taken by an existing admin, excluding a specified admin.
  * 
  * @static
  * @memberof Admin
- * @param {string} adminId - The admin ID to check.
+ * @param {string} adminEmail - The admin email to check.
  * @param {ObjectId} adminMongoId - The admin Mongo ID to exclude from the check.
  * @returns {Promise<boolean>} A promise that resolves to a boolean indicating whether the email is taken (true) or not (false).
  */
-adminSchema.statics.isAdminIdTaken = async function (adminId, excludeAdminMongoId) {
-    const admin = await this.findOne({ adminId, _id: { $ne: excludeAdminMongoId } });
+adminSchema.statics.isEmailTaken = async function (adminEmail, excludeAdminMongoId) {
+    const admin = await this.findOne({ adminEmail, _id: { $ne: excludeAdminMongoId } });
     return !!admin;
 }
 

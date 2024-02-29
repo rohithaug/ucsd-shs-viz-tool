@@ -21,8 +21,8 @@ const getToken = require('../utils/getToken');
  */
 
 const createAdmin = async (adminBody) => {
-    if (await adminModel.isAdminIdTaken(adminBody.adminId)) {
-        throw new apiError(httpStatus.BAD_REQUEST, "Admin ID already taken");
+    if (await adminModel.isEmailTaken(adminBody.adminId)) {
+        throw new apiError(httpStatus.BAD_REQUEST, "Email already taken!");
     }
     try {
         const admin = await adminModel.create(adminBody);
@@ -58,22 +58,6 @@ const validateAdmin = async (adminBody) => {
 };
 
 /**
- * Given admin ID, returns admin name.
- * 
- * @function
- * @async
- * @name getAdminName
- * @param {String} adminId - The admin's ID.
- * @returns {Promise<String>} Promise that resolves with admin name.
- * @throws {Error} If there is an issue getting admin name.
- */
-
-const getAdminName = async (adminId) => {
-    const admin = await adminModel.findOne({ adminId });
-    return admin.name;
-};
-
-/**
  * Given admin email and hashed password, returns admin details along with a token.
  * 
  * @function
@@ -103,6 +87,5 @@ const signInAdmin = async (adminBody) => {
 module.exports = {
     createAdmin,
     validateAdmin,
-    getAdminName,
     signInAdmin
 };
