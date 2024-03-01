@@ -1,5 +1,6 @@
+import DislikeButtonIcon from '@/assets/icons/dislikeButton';
+import LikeButtonIcon from '@/assets/icons/likeButton';
 import React, {useState} from 'react';
-import { AiFillLike, AiFillDislike } from 'react-icons/ai';
 
 const LikeDislike = (props) => {
 
@@ -34,8 +35,16 @@ const LikeDislike = (props) => {
 
   return (
     <div style={{'display': 'flex', 'justify-content': 'flex-end'}}>
-        <AiFillLike style={{'font-size': '35px'}} color={likeClicked? 'green' : 'black'} onClick={handleLikeClick}/>
-        <AiFillDislike style={{'font-size': '35px'}} color={dislikeClicked? 'red' : 'black'} onClick={handleDislikeClick}/>
+        <div style={{paddingRight: '20px', borderRight: '1px black solid', display: 'flex', alignItems: 'center'}} className='text-gray-500'>
+            Feedback
+        </div>
+        <button style={{marginLeft: '20px', marginRight: '15px'}} onClick={handleLikeClick}>
+            <LikeButtonIcon color={likeClicked? 'green' : 'black'} />
+        </button>
+        <button style={{marginLeft: '15px', marginRight: '10px'}} onClick={handleDislikeClick}>
+            <DislikeButtonIcon color={dislikeClicked? 'red' : 'black'} />
+        </button>
+        
     </div>
   );
 };
