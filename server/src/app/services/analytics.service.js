@@ -2,7 +2,7 @@
 const httpStatus = require('http-status');
 
 // REQUIRE MODELS
-const { trackerModel } = require('../models');
+const { trackerModel, blogModel } = require('../models');
 
 // REQUIRE UTILS
 const apiError = require('../utils/apiError');
@@ -16,11 +16,19 @@ const apiError = require('../utils/apiError');
  */
 const getMetrics = async () => {
     const data = await trackerModel.find();
+    const blogData = await blogModel.find();
 
     const metrics = {
         uniqueVisit: {}, // UNIQUE VISIT TO EACH BLOG PAGE
-        blogSource: {} // SOURCE OF VISIT FOR EACH BLOG PAGE
+        blogSource: {}, // SOURCE OF VISIT FOR EACH BLOG PAGE
+        likes: {}, // Likes FOR EACH BLOG PAGE
+        dislikes: {} // DisLikes FOR EACH BLOG PAGE
     }
+
+    blogData.forEach(blog => {
+        metrics.likes[blog.blogId] = blog.likes;
+        metrics.dislikes[blog.blogId] = blog.dislikes;
+    });
 
     data.forEach(element => {
         const blogId = element.blogId;
@@ -50,6 +58,8 @@ const getMetrics = async () => {
     // Convert metrics to array
     metrics.uniqueVisit = Object.entries(metrics.uniqueVisit).map(([blogId, count]) => ({ blogId, count }));
     metrics.blogSource = Object.entries(metrics.blogSource).map(([blogId, count]) => ({ blogId, count }));
+    metrics.likes = Object.entries(metrics.likes).map(([blogId, count]) => ({ blogId, count }));
+    metrics.dislikes = Object.entries(metrics.dislikes).map(([blogId, count]) => ({ blogId, count }));
 
     return metrics;
 };

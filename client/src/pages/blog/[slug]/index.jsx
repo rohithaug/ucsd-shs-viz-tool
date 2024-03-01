@@ -7,6 +7,7 @@ import moment from 'moment';
 // IMPORT COMPONENTS
 import Layout from '../components/layout';
 import Breadcrumb from '../components/breadcrumb';
+import LikeDislike from '../components/likedislike';
 
 const Page = () => {
     const router = useRouter();
@@ -181,6 +182,8 @@ const Page = () => {
                     <p className="mb-8 text-justify text-gray-500 whitespace-pre-line">
                         {postDetails.content}
                     </p>
+                    <LikeDislike blogId={router.query.slug}/>
+
                 </>
                 :
                 <></>

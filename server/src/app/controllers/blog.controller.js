@@ -84,6 +84,36 @@ const updateBlog = catchAsync(async (req, res) => {
     const blog = await blogService.updateBlog(req.params.blogId, req.body);  
     res.send(blog);
 });
+
+/**
+ * Likes an existing blog details based on the request parameters and body.
+ *
+ * @function
+ * @async
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>} Promise that resolves when the blog is updated and the response is sent.
+ * @throws {Error} If there is an issue liking the blog or sending the response.
+ */
+const likeBlog = catchAsync(async (req, res) => {
+    await blogService.likeBlog(req.params.blogId);  
+    res.send("");
+});
+
+/**
+ * Dislikes an existing blog details based on the request parameters and body.
+ *
+ * @function
+ * @async
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>} Promise that resolves when the blog is updated and the response is sent.
+ * @throws {Error} If there is an issue disliking the blog or sending the response.
+ */
+const dislikeBlog = catchAsync(async (req, res) => {
+    await blogService.dislikeBlog(req.params.blogId);  
+    res.send("");
+});
   
 /**
  * Deletes an existing blog based on the request parameters.
@@ -128,5 +158,7 @@ module.exports = {
     getBlogImage,
     updateBlog,
     deleteBlog,
-    getAllBlogs
+    getAllBlogs,
+    likeBlog,
+    dislikeBlog
 };
