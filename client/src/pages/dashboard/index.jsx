@@ -93,16 +93,23 @@ export default function Page() {
       );
     }
 
+    //should be an array of sources used for each post --- not sure if post or post?.count
+    var sourcesArray = dashboardMetrics?.blogSource?.map(post => Object.keys(post?.count));
+    //should be flat array of all used sources in the data
+    // src=allSources[0] should have dashboardMetrics?.blogSource?.post?.count[src] be the relevant value
+    var allSources = [...new Set(sourcesArray.flat())];
+
     return (
         <div>
-            {dashboardMetrics && dashboardMetrics.uniqueVisit ?
-                <div>
-                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
-                    <BarChart 
-                        title="Unique visits to each blog page"
-                        labels={dashboardMetrics?.uniqueVisit?.map(post => post?.blogId)}
-                        datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.map(post => post?.count) }]}
-                    />
+            <div>
+                {dashboardMetrics && dashboardMetrics.uniqueVisit ?
+                    <div>
+                        <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
+                        <BarChart 
+                            title="Unique visits to each blog page"
+                            labels={dashboardMetrics?.uniqueVisit?.map(post => post?.blogId)}
+                            datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.map(post => post?.count) }]}
+                        />
                     <div style={{display: 'flex'}}>
                         <div style={{display: 'block', flex: 1}}>
                             <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Likes for each blog page</h1>
@@ -121,10 +128,32 @@ export default function Page() {
                             />
                         </div>
                     </div>
-                </div>
-                :
-                <></>
-            }
+                    </div>
+                    :
+                    <></>
+                }
+            </div>
+            <div>
+                {dashboardMetrics && dashboardMetrics.blogSource ?
+                    <div>
+                        <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Visit sources for each blog page</h1>
+                        <BarChart 
+                            title="Visit sources for each blog page"
+                            labels={dashboardMetrics?.blogSource?.map(post => post?.blogId)}
+                            datasets={allSources.map(src => 
+                                (
+                                    {
+                                    label: src,
+                                    data:  dashboardMetrics?.uniqueVisit?.map(post => post?.count[src])
+                                    }
+                                )
+                            )}
+                        />
+                    </div>
+                    :
+                    <></>
+                }
+            </div>
         </div>
     )
 }
