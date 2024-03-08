@@ -7,6 +7,7 @@ import Cookie from 'js-cookie';
 import Layout from './components/layout';
 import BarChart from './components/charts/barChart';
 import PieChart from './components/charts/pieChart';
+import LineChart from './components/charts/lineChart';
  
 export default function Page() {
     const router = useRouter();
@@ -98,10 +99,14 @@ export default function Page() {
             {dashboardMetrics && dashboardMetrics.uniqueVisit ?
                 <div>
                     <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
-                    <BarChart 
+                    <LineChart 
                         title="Unique visits to each blog page"
                         labels={dashboardMetrics?.uniqueVisit?.map(post => post?.blogId)}
-                        datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.map(post => post?.count) }]}
+                        datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.map(post => ({
+                                                                                                                x: post?.date,
+                                                                                                                y: post?.count
+                        })) }]}
+                        time = {false}
                     />
                     <div style={{display: 'flex'}}>
                         <div style={{display: 'block', flex: 1}}>
@@ -121,7 +126,7 @@ export default function Page() {
                             />
                         </div>
                     </div>
-                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Likes and Dislikes for each blog page</h1>
                     <BarChart 
                         title="Likes and Dislikes for each blog page"
                         labels={dashboardMetrics?.dislikes?.map(post => post?.blogId)}
