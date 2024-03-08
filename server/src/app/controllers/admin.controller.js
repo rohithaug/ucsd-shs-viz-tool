@@ -51,28 +51,6 @@ const validateAdmin = catchAsync(async (req, res) => {
 });
 
 /**
- * Given admin ID, returns admin name.
- *
- * @function
- * @async
- * @name getAdminName
- * @param {String} adminId - The admin's ID.
- * @returns {Promise<String>} Promise that resolves with admin name.
- * @throws {Error} If there is an issue getting admin name.
- */
-
-const getAdminName = catchAsync(async (req, res) => {
-    const admin = await adminService.getAdminName(req.params.adminId);
-    if (!admin) {
-        res.status(httpStatus.NOT_FOUND).send({
-            message: 'Admin not found'
-        });
-    } else {
-        res.status(httpStatus.OK).send(admin);
-    }
-});
-
-/**
  * Given admin email and password, returns admin details along with a token.
  * 
  * @function

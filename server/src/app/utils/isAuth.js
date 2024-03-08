@@ -14,7 +14,7 @@ const isAuth = (req, res, next) => {
                 message: 'Unauthorized!',
             });
         }
-        req.adminId = decoded.adminId;
+        req.email = decoded.email;
         next();
     });
 };
