@@ -20,6 +20,12 @@ router.get("/:blogId", blogController.getBlog);
 // UPDATE REQUEST FOR BLOG
 router.put("/:blogId", blogController.updateBlog);
 
+// LIKE REQUEST FOR BLOG
+router.get("/like/:blogId", blogController.likeBlog);
+
+// DISLIKE REQUEST FOR BLOG
+router.get("/dislike/:blogId", blogController.dislikeBlog);
+
 // DELETE REQUEST FOR BLOG
 router.delete("/:blogId", blogController.deleteBlog);
 

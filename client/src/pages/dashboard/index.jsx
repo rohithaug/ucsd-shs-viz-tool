@@ -6,6 +6,7 @@ import Cookie from 'js-cookie';
 // IMPORT COMPONENTS
 import Layout from './components/layout';
 import BarChart from './components/charts/barChart';
+import PieChart from './components/charts/pieChart';
  
 export default function Page() {
     const router = useRouter();
@@ -102,6 +103,24 @@ export default function Page() {
                         labels={dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.blogId)}
                         datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.count) }]}
                     />
+                    <div style={{display: 'flex'}}>
+                        <div style={{display: 'block', flex: 1}}>
+                            <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Likes for each blog page</h1>
+                            <PieChart
+                                title="Likes for each blog page"
+                                labels={dashboardMetrics?.likes?.map(post => post?.blogId)}
+                                datasets={[{ label: "Likes", data: dashboardMetrics?.likes?.map(post => post?.count) }]}
+                            />
+                        </div>
+                        <div style={{display: 'block', flex: 1}}>
+                            <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Dislikes for each blog page</h1>
+                            <PieChart
+                                title="Dislikes for each blog page"
+                                labels={dashboardMetrics?.dislikes?.map(post => post?.blogId)}
+                                datasets={[{ label: "Dislikes", data: dashboardMetrics?.dislikes?.map(post => post?.count) }]}
+                            />
+                        </div>
+                    </div>
                 </div>
                 :
                 <></>
