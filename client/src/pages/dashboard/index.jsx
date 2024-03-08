@@ -121,7 +121,7 @@ export default function Page() {
                             />
                         </div>
                     </div>
-                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Likes and Dislikes for each blog page</h1>
                     <BarChart 
                         title="Likes and Dislikes for each blog page"
                         labels={dashboardMetrics?.dislikes?.map(post => post?.blogId)}
