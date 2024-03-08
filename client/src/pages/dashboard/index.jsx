@@ -128,6 +128,14 @@ export default function Page() {
                             />
                         </div>
                     </div>
+                    <div style={{display: 'block', flex: 1}}>
+                        <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Dislikes for each blog page</h1>
+                        <PieChart
+                            title="Views for each category"
+                            labels={dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.blogId)}
+                            datasets={[{ label: "Views", data: dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.count) }]}
+                        />
+                    </div>
                     </div>
                     :
                     <></>
