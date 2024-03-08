@@ -21,7 +21,7 @@ const getToken = require('../utils/getToken');
  */
 
 const createAdmin = async (adminBody) => {
-    if (await adminModel.isEmailTaken(adminBody.adminId)) {
+    if (await adminModel.isEmailTaken(adminBody.email)) {
         throw new apiError(httpStatus.BAD_REQUEST, "Email already taken!");
     }
     try {
