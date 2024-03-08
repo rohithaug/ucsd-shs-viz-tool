@@ -70,6 +70,5 @@ const signInAdmin = catchAsync(async (req, res) => {
 module.exports = {
     createAdmin,
     validateAdmin,
-    getAdminName,
     signInAdmin,
 };
