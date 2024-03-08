@@ -50,6 +50,18 @@ const getAllBlogs = async () => {
     return await blogModel.find();
 };
 
+
+/**
+ * Get ID and Category for all blogs
+ * 
+ * @function
+ * @async
+ * @returns {Promise<user>} - Promise that resolved to the retrieved blogs.
+ */
+const getAllBlogsIdAndCategory = async () => {
+    return await blogModel.find().select('blogId category');
+};
+
 /**
  * Update blog details by ID
  * 
@@ -140,6 +152,7 @@ module.exports = {
     createBlog,
     getBlog,
     getAllBlogs,
+    getAllBlogsIdAndCategory,
     updateBlog,
     deleteBlog,
     likeBlog,

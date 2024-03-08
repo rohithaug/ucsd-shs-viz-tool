@@ -95,13 +95,13 @@ export default function Page() {
 
     return (
         <div>
-            {dashboardMetrics && dashboardMetrics.uniqueVisit ?
+            {dashboardMetrics && dashboardMetrics.uniqueVisit?.blog ?
                 <div>
                     <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
                     <BarChart 
                         title="Unique visits to each blog page"
-                        labels={dashboardMetrics?.uniqueVisit?.map(post => post?.blogId)}
-                        datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.map(post => post?.count) }]}
+                        labels={dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.blogId)}
+                        datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.count) }]}
                     />
                     <div style={{display: 'flex'}}>
                         <div style={{display: 'block', flex: 1}}>
