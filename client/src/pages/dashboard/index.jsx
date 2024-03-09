@@ -99,7 +99,7 @@ export default function Page() {
             {dashboardMetrics && dashboardMetrics.uniqueVisit?.blog ?
                 <div>
                     <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Blog Post Metrics</h1>
-                    <BlogPostMetrics />
+                    <BlogPostMetrics adminToken={adminToken}/>
 
                     <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
                     <BarChart 

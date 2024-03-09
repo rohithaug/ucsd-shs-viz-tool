@@ -4,52 +4,32 @@ import React, { useState, useEffect } from 'react';
 // IMPORT ICONS
 import SortButtonIcon from '@/assets/icons/sortButton';
 
-const BlogPostMetrics = () => {
+const BlogPostMetrics = ({ adminToken }) => {
     const [blogPostMetrics, setBlogPostMetrics] = useState([]);
     const [sortDirection, setSortDirection] = useState({ key: null, ascending: true });
 
     useEffect(() => {
-        const blogPostMetrics = [
-            {
-                id: "blog-post-id",
-                name: "Blog Post Title",
-                visits: 0,
-                likes: 0,
-                dislikes: 0,
-                source: {
-                    email: 0,
-                    direct: 0,
-                    home: 0
-                }
-            },
-            {
-                id: "blog-post-id",
-                name: "Blog Post Title",
-                visits: 5,
-                likes: 0,
-                dislikes: 0,
-                source: {
-                    email: 1,
-                    direct: 4,
-                    home: 0
-                }
-            },
-            {
-                id: "blog-post-id",
-                name: "Blog Post Title",
-                visits: 4,
-                likes: 0,
-                dislikes: 0,
-                source: {
-                    email: 0,
-                    direct: 7,
-                    home: 0
-                }
-            }
-        ];
+        const fetchBlogPostMetrics = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analytics/metrics/bulk`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
 
-        setBlogPostMetrics(blogPostMetrics);
-    }, []);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch blog post metrics');
+                }
+                const data = await response.json();
+                setBlogPostMetrics(data);
+
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchBlogPostMetrics();
+    }, [adminToken]);
 
     const sortBlogPostMetrics = (key, subkey = null) => {
         let tempBlogPostMetrics = [...blogPostMetrics];
@@ -151,10 +131,10 @@ const BlogPostMetrics = () => {
                         return (
                             <tr class="bg-white border-b">
                                 <th scope="row" class="px-6 py-4">
-                                    <a href={`dashboard/${item.id}`} class="font-medium text-gray-900 whitespace-nowrap hover:text-blue-900 hover:underline">{item.name}</a>
+                                    <a href={`blog/${item.blogId}`} class="font-medium text-gray-900 whitespace-nowrap hover:text-blue-900 hover:underline">{item.blogName}</a>
                                 </th>
                                 <td class="px-6 py-4">
-                                    {item.visits}
+                                    {item.uniqueVisit}
                                 </td>
                                 <td class="px-6 py-4">
                                     {item.source.email}
