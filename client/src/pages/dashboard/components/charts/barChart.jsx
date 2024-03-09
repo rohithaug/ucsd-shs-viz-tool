@@ -42,12 +42,7 @@ const BarChart = ({ title, labels, datasets }) => {
 
     const data = {
         labels,
-        datasets: datasets.map(dataset => ({
-            ...dataset,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgb(54, 162, 235)'
-
-        }))
+        datasets
     };
 
     return <Bar options={options} data={data} />;
