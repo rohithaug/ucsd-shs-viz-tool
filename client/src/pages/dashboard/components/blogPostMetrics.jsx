@@ -75,8 +75,6 @@ const BlogPostMetrics = () => {
         setSortDirection(newSortDirection);
     }
 
-    console.log("DEBUG FINAL: ", blogPostMetrics);
-
     return (
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-8">
             <table class="w-full text-sm text-left text-gray-500">
