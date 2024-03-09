@@ -23,7 +23,7 @@ export default function Page() {
         try {
             setDashboardMetricsFetchLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analytics/metrics/`, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${adminToken}`,
                 }

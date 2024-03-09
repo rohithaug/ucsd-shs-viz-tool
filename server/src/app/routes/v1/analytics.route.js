@@ -5,7 +5,7 @@ const router = express.Router();
 // REQUIRE CONTROLLERS
 const { analyticsController } = require("../../controllers");
 
-// POST REQUEST FOR ANALYTICS DATA
-router.post("/metrics", analyticsController.getMetrics);
+// GET REQUEST FOR ANALYTICS DATA
+router.get("/metrics", analyticsController.getMetrics);
 
 module.exports = router;
