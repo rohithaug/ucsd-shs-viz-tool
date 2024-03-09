@@ -95,6 +95,63 @@ const getMetrics = async () => {
     return metrics;
 };
 
+/**
+ * Get SHS Dashboard Analytics Metrics for a specific blog.
+ * 
+ * @function
+ * @async
+ * @param {string} blogId - Blog ID.
+ * @returns {Promise<user>} - Promise that resolved to the retrieved metrics for a specific blog.
+ */
+
+const getBlogMetrics = async (blogId) => {
+    const data = await trackerModel.find({ blogId });
+    const blogData = await blogModel.findOne({ blogId });
+
+    const metrics = {
+        blogId: blogData.blogId,
+        blogName: blogData.title,
+        uniqueVisit: 0,
+        source: {},
+        likes: blogData.likes, // Likes FOR EACH BLOG PAGE
+        dislikes: blogData.dislikes // DisLikes FOR EACH BLOG PAGE
+    }
+
+    data.forEach(element => {
+        const blogSource = element.source;
+        // CONSOLIDATED SOURCE OF VISITS
+        if (blogSource in metrics.source) {
+            metrics.source[blogSource] += 1
+        } else {
+            metrics.source[blogSource] = 1
+        }
+        metrics.uniqueVisit += 1
+    });
+
+    return metrics;
+}
+
+/**
+ * Get SHS Dashboard Analytics Metrics for bulk blogs.
+ * 
+ * @function
+ * @async
+ * @returns {Promise<user>} - Promise that resolved to the retrieved metrics.
+ */
+
+const getBulkMetrics = async () => {
+    const blogDetails = await getAllBlogsIdAndCategory();
+    // Get metrics for each blog. Each metric is an array containing blogId, blogName and metric object returned by getBlogMetrics.
+    const metrics = await Promise.all(blogDetails.map(async ({ blogId }) => {
+        const metric = await getBlogMetrics(blogId);
+        return metric;
+    }));
+
+    return metrics;
+}
+
 module.exports = {
-    getMetrics
+    getMetrics,
+    getBlogMetrics,
+    getBulkMetrics
 };
