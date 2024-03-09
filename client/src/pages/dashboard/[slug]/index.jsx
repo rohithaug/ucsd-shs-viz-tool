@@ -128,9 +128,7 @@ export default function Page() {
                 <tbody>
                     <tr class="bg-white border-b">
                         <th scope="row" class="px-6 py-4">
-                            {/* <Link href={`blog/${blogPostMetrics.blogId}`}> */}
-                                <a class="font-medium text-gray-900 whitespace-nowrap hover:text-blue-900 hover:underline">{blogPostMetrics.blogName}</a>
-                            {/* </Link> */}
+                            <p class="font-medium text-gray-900 whitespace-nowrap">{blogPostMetrics.blogName}</p>
                         </th>
                         <td class="px-6 py-4">
                             {blogPostMetrics.uniqueVisit}

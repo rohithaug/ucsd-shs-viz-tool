@@ -131,7 +131,7 @@ const BlogPostMetrics = ({ adminToken }) => {
                         return (
                             <tr class="bg-white border-b">
                                 <th scope="row" class="px-6 py-4">
-                                    <a href={`blog/${item.blogId}`} class="font-medium text-gray-900 whitespace-nowrap hover:text-blue-900 hover:underline">{item.blogName}</a>
+                                    <a href={`dashboard/${item.blogId}`} class="font-medium text-gray-900 whitespace-nowrap hover:text-blue-900 hover:underline">{item.blogName}</a>
                                 </th>
                                 <td class="px-6 py-4">
                                     {item.uniqueVisit}
