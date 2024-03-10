@@ -7,7 +7,8 @@ import Cookie from 'js-cookie';
 import Layout from './components/layout';
 import BarChart from './components/charts/barChart';
 import PieChart from './components/charts/pieChart';
- 
+import BlogPostMetrics from './components/blogPostMetrics'; 
+
 export default function Page() {
     const router = useRouter();
 
@@ -23,7 +24,7 @@ export default function Page() {
         try {
             setDashboardMetricsFetchLoading(true);
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analytics/metrics/`, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${adminToken}`,
                 }
@@ -97,11 +98,57 @@ export default function Page() {
         <div>
             {dashboardMetrics && dashboardMetrics.uniqueVisit?.blog ?
                 <div>
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Blog Post Metrics</h1>
+                    <BlogPostMetrics />
+
                     <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
                     <BarChart 
                         title="Unique visits to each blog page"
                         labels={dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.blogId)}
-                        datasets={[{ label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.count) }]}
+                        datasets={[
+                            { 
+                                label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.count),
+                                backgroundColor: 'rgba(54, 162, 235, 0.3)',
+                                borderColor: 'rgb(54, 162, 235)'
+                            }
+                        ]}
+                    />
+                    <BarChart
+                        title="Likes and Dislikes for each blog page"
+                        labels={dashboardMetrics?.likes?.map(post => post?.blogId)}
+                        datasets={[
+                            { 
+                                label: "Likes", data: dashboardMetrics?.likes?.map(post => post?.count),
+                                backgroundColor: 'rgba(75, 192, 192, 0.3)',
+                                borderColor: 'rgb(75, 192, 192)'                                
+                            },
+                            { 
+                                label: "Dislikes", data: dashboardMetrics?.dislikes?.map(post => post?.count),
+                                backgroundColor: 'rgba(255, 99, 132, 0.3)',
+                                borderColor: 'rgb(255, 99, 132)'                                
+                            }
+                        ]}
+                    />
+                    <BarChart
+                        title="Source of visit for each blog page"
+                        labels={dashboardMetrics?.source?.blog?.map(post => post?.blogId)}
+                        datasets={[
+                            { 
+                                label: "Home", data: dashboardMetrics?.source?.blog?.map(post => post?.count?.home),
+                                backgroundColor: 'rgba(255, 206, 86, 0.3)',
+                                borderColor: 'rgb(255, 206, 86)'                                
+                            },
+                            { 
+                                label: "Direct", data: dashboardMetrics?.source?.blog?.map(post => post?.count?.direct),
+                                backgroundColor: 'rgba(153, 102, 255, 0.3)',
+                                borderColor: 'rgb(153, 102, 255)'                                
+                            },
+                            { 
+                                label: "Email", data: dashboardMetrics?.source?.blog?.map(post => post?.count?.email),
+                                backgroundColor: 'rgba(54, 162, 235, 0.3)',
+                                borderColor: 'rgb(54, 162, 235)'                                
+                            }
+                        ]}
                     />
                     <div style={{display: 'flex'}}>
                         <div style={{display: 'block', flex: 1}}>
@@ -120,6 +167,14 @@ export default function Page() {
                                 datasets={[{ label: "Dislikes", data: dashboardMetrics?.dislikes?.map(post => post?.count) }]}
                             />
                         </div>
+                    </div>
+                    <div style={{display: 'block', flex: 1}}>
+                        <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Category wise Views</h1>
+                        <PieChart
+                            title="Views for each category"
+                            labels={dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.blogId)}
+                            datasets={[{ label: "Views", data: dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.count) }]}
+                        />
                     </div>
                 </div>
                 :
