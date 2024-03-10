@@ -39,10 +39,10 @@ jobs:
         run: cd client && npm install
 
       - name: Install server dependencies
-        run: cd ../server && npm install
+        run: cd server && npm install
 
       - name: Run Jest Tests
-        run: cd ../client && npm run test
+        run: cd client && npm run test
 
   # This workflow contains a single job called "build"
   build:
@@ -61,5 +61,5 @@ jobs:
           node-version: 21.x
 
       # Runs a single command using the runners shell
-      - name: Run build
-        run: npm run build
+      - name: Run client build
+        run: cd client && npm run build
