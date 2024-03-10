@@ -15,9 +15,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  run-jest-tests:
+  run-client:
     # Name of the job as it will be displayed in GitHub
-    name: Jest Tests
+    name: run client
     # Machine which this action will be run on. For a list of all the machines available/how to run on self hosted machine visit
     # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     runs-on: ubuntu-latest
@@ -38,28 +38,37 @@ jobs:
       - name: Install client dependencies
         run: cd client && npm install
 
-      - name: Install server dependencies
-        run: cd server && npm install
-
-      - name: Run Jest Tests
+      - name: Run client Jest Tests
         run: cd client && npm run test
 
+      - name: build client
+        run: cd client && npm run build
+
   # This workflow contains a single job called "build"
-  build:
+  run-server:
     # The type of runner that the job will run on
+    name: run server
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+     # Reference the main branch. For more information visit https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses
       - name: Checkout under $GITHUB_WORKSPACE
         uses: actions/checkout@v4
-        
+
+      # Specify which version of Node this project is using. For more information visit.
+      # https://docs.github.com/en/actions/guides/building-and-testing-nodejs#specifying-the-nodejs-version
       - name: Use Node.js 21.x
         uses: actions/setup-node@v1
         with:
           node-version: 21.x
 
-      # Runs a single command using the runners shell
-      - name: Run client build
-        run: cd client && npm run build
+      - name: Install server dependencies
+        run: cd server && npm install
+
+      - name: Run server Jest Tests
+        run: cd server && npm run test
+
+      - name: build server
+        run: cd server && npm run build
