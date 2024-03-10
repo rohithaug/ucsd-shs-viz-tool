@@ -44,8 +44,8 @@ const PieChart = ({ title, labels, datasets }) => {
         datasets: [
             {
                 label: 'Likes',
-                data: datasets[0].data,
-                backgroundColor: COLORS.slice(0, labels.length),
+                data: datasets ? datasets[0].data : [],
+                backgroundColor: COLORS.slice(0, labels?.length),
                 borderColor: 'rgb(54, 162, 235)'
             }
         ],

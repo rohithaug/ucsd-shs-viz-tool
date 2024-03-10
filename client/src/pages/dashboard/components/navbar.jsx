@@ -6,7 +6,7 @@ import Image from 'next/image'
 import ucsdLogo from '../../../assets/images/ucsdLogo.png';
 
 // IMPORT UTILS
-import { logout } from '../actions/logout_actions';
+import { logout } from '../../../utils/logout_actions';
 
 const Navbar = () => {
   return (
