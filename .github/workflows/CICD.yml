@@ -69,6 +69,3 @@ jobs:
 
       - name: Run server Jest Tests
         run: cd server && npm run test
-
-      - name: build server
-        run: cd server && npm run build
