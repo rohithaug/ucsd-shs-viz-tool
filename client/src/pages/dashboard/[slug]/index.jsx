@@ -131,7 +131,7 @@ export default function Page() {
                             <p class="font-medium text-gray-900 whitespace-nowrap">{blogPostMetrics.blogName}</p>
                         </th>
                         <td class="px-6 py-4">
-                            {blogPostMetrics.uniqueVisit}
+                            {blogPostMetrics.uniqueVisit || 0}
                         </td>
                         <td class="px-6 py-4">
                             {blogPostMetrics.source && blogPostMetrics.source.email ? blogPostMetrics.source.email : 0}
