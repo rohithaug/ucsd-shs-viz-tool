@@ -1,73 +1,55 @@
 // IMPORT LIBRARIES
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 // IMPORT ICONS
 import SortButtonIcon from '@/assets/icons/sortButton';
 
-const BlogPostMetrics = () => {
+const BlogPostMetrics = ({ adminToken }) => {
     const [blogPostMetrics, setBlogPostMetrics] = useState([]);
     const [sortDirection, setSortDirection] = useState({ key: null, ascending: true });
 
     useEffect(() => {
-        const blogPostMetrics = [
-            {
-                id: "blog-post-id",
-                name: "Blog Post Title",
-                visits: 0,
-                likes: 0,
-                dislikes: 0,
-                source: {
-                    email: 0,
-                    direct: 0,
-                    home: 0
-                }
-            },
-            {
-                id: "blog-post-id",
-                name: "Blog Post Title",
-                visits: 5,
-                likes: 0,
-                dislikes: 0,
-                source: {
-                    email: 1,
-                    direct: 4,
-                    home: 0
-                }
-            },
-            {
-                id: "blog-post-id",
-                name: "Blog Post Title",
-                visits: 4,
-                likes: 0,
-                dislikes: 0,
-                source: {
-                    email: 0,
-                    direct: 7,
-                    home: 0
-                }
-            }
-        ];
+        const fetchBlogPostMetrics = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analytics/metrics/bulk`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
 
-        setBlogPostMetrics(blogPostMetrics);
-    }, []);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch blog post metrics');
+                }
+                const data = await response.json();
+                setBlogPostMetrics(data);
+
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchBlogPostMetrics();
+    }, [adminToken]);
 
     const sortBlogPostMetrics = (key, subkey = null) => {
         let tempBlogPostMetrics = [...blogPostMetrics];
         let newSortDirection = { key, ascending: true };
 
         if (key === "source") {
-            if (sortDirection.key === key && sortDirection.ascending) {
-                newSortDirection = { key, ascending: false };
-                tempBlogPostMetrics.sort((a, b) => a.source[subkey] - b.source[subkey]);
+            newSortDirection.key = `source-${subkey}`;
+            if (sortDirection.key === `source-${subkey}` && sortDirection.ascending) {
+                newSortDirection.ascending = false;
+                tempBlogPostMetrics.sort((a, b) => (a.source[subkey] ?? 0) - (b.source[subkey] ?? 0));
             } else {
-                tempBlogPostMetrics.sort((a, b) => b.source[subkey] - a.source[subkey]);
+                tempBlogPostMetrics.sort((a, b) => (b.source[subkey] ?? 0) - (a.source[subkey] ?? 0));
             }
         } else {
             if (sortDirection.key === key && sortDirection.ascending) {
-                newSortDirection = { key, ascending: false };
-                tempBlogPostMetrics.sort((a, b) => a[key] - b[key]);
+                newSortDirection.ascending = false;
+                tempBlogPostMetrics.sort((a, b) => (a[key] ?? 0) - (b[key] ?? 0));
             } else {
-                tempBlogPostMetrics.sort((a, b) => b[key] - a[key]);
+                tempBlogPostMetrics.sort((a, b) => (b[key] ?? 0) - (a[key] ?? 0));
             }
         }
 
@@ -76,25 +58,25 @@ const BlogPostMetrics = () => {
     }
 
     return (
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-8">
-            <table class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-8">
+            <table className="w-full text-sm text-left text-gray-500">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" className="px-6 py-3">
                             Blog Title
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
+                        <th scope="col" className="px-6 py-3">
+                            <div className="flex items-center">
                                 Number of Views
                                 <div 
-                                    onClick={() => sortBlogPostMetrics("visits")}
+                                    onClick={() => sortBlogPostMetrics("uniqueVisit")}
                                 >
                                     <SortButtonIcon />
                                 </div>
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
+                        <th scope="col" className="px-6 py-3">
+                            <div className="flex items-center">
                                 Source - Email
                                 <div 
                                     onClick={() => sortBlogPostMetrics("source", "email")}
@@ -103,8 +85,8 @@ const BlogPostMetrics = () => {
                                 </div>
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
+                        <th scope="col" className="px-6 py-3">
+                            <div className="flex items-center">
                                 Source - Direct
                                 <div 
                                     onClick={() => sortBlogPostMetrics("source", "direct")}
@@ -113,8 +95,8 @@ const BlogPostMetrics = () => {
                                 </div>
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
+                        <th scope="col" className="px-6 py-3">
+                            <div className="flex items-center">
                                 Source - Home
                                 <div 
                                     onClick={() => sortBlogPostMetrics("source", "home")}
@@ -123,8 +105,8 @@ const BlogPostMetrics = () => {
                                 </div>
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
+                        <th scope="col" className="px-6 py-3">
+                            <div className="flex items-center">
                                 Number of Likes
                                 <div 
                                     onClick={() => sortBlogPostMetrics("likes")}
@@ -133,8 +115,8 @@ const BlogPostMetrics = () => {
                                 </div>
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
+                        <th scope="col" className="px-6 py-3">
+                            <div className="flex items-center">
                                 Number of dislikes
                                 <div 
                                     onClick={() => sortBlogPostMetrics("dislikes")}
@@ -149,27 +131,29 @@ const BlogPostMetrics = () => {
                 <tbody>
                     {blogPostMetrics.map(item => {
                         return (
-                            <tr class="bg-white border-b">
-                                <th scope="row" class="px-6 py-4">
-                                    <a href={`dashboard/${item.id}`} class="font-medium text-gray-900 whitespace-nowrap hover:text-blue-900 hover:underline">{item.name}</a>
+                            <tr className="bg-white border-b">
+                                <th scope="row" className="px-6 py-4">
+                                    <Link href={`/dashboard/${item.blogId}`}>
+                                        <p className="font-medium text-blue-600 whitespace-nowrap hover:text-blue-900 hover:underline">{item.blogName}</p>
+                                    </Link>
                                 </th>
-                                <td class="px-6 py-4">
-                                    {item.visits}
+                                <td className="px-6 py-4">
+                                    {item.uniqueVisit || 0}
                                 </td>
-                                <td class="px-6 py-4">
-                                    {item.source.email}
+                                <td className="px-6 py-4">
+                                    {item.source.email || 0}
                                 </td>
-                                <td class="px-6 py-4">
-                                    {item.source.direct}
+                                <td className="px-6 py-4">
+                                    {item.source.direct || 0}
                                 </td>
-                                <td class="px-6 py-4">
-                                    {item.source.home}
+                                <td className="px-6 py-4">
+                                    {item.source.home || 0}
                                 </td>
-                                <td class="px-6 py-4">
-                                    {item.likes}
+                                <td className="px-6 py-4">
+                                    {item.likes || 0}
                                 </td>
-                                <td class="px-6 py-4">
-                                    {item.dislikes}
+                                <td className="px-6 py-4">
+                                    {item.dislikes || 0}
                                 </td>
                             </tr>    
                         )
