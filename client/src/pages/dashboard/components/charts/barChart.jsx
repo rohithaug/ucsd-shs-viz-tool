@@ -44,6 +44,11 @@ const BarChart = ({ title, labels, datasets, ...props }) => {
                 }
             },
         },
+        scale: {
+            ticks: {
+                precision: 0
+            }
+        }
     };
 
     const data = {
