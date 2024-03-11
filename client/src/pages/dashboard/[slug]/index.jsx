@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
-import { Link } from 'next/link';
 
 // IMPORT COMPONENTS
 import Layout from '../components/layout';
-
+import IndivdualBlogPostMetrics from '../components/individualBlogPostMetrics';
+import PieChart from '../components/charts/pieChart';
 export default function Page() {
     const router = useRouter();
     const adminToken = Cookie.get('token') || null;
-    const [blogPostMetrics, setBlogPostMetrics] = useState([]);
+    const [blogPostMetrics, setBlogPostMetrics] = useState(null);
     const [blogPostMetricsFetchLoading, setBlogPostMetricsFetchLoading] = useState(true);
     const [blogPostMetricsFetchError, setBlogPostMetricsFetchError] = useState(false);
     const [blogPostMetricsFetchErrorDetails, setBlogPostMetricsFetchErrorDetails] = useState(null);
@@ -85,72 +85,62 @@ export default function Page() {
     }
 
     return (
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-8">
-            <table class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Blog Title
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
-                                Number of Views
-                            </div>
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
-                                Source - Email
-                            </div>
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
-                                Source - Direct
-                            </div>
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
-                                Source - Home
-                            </div>
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
-                                Number of Likes
-                            </div>
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <div class="flex items-center">
-                                Number of dislikes
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
+        <div>
+            {blogPostMetrics ?
+                <div>
+                    <IndivdualBlogPostMetrics 
+                        blogPostMetrics={blogPostMetrics}
+                    />
 
-                <tbody>
-                    <tr class="bg-white border-b">
-                        <th scope="row" class="px-6 py-4">
-                            <p class="font-medium text-gray-900 whitespace-nowrap">{blogPostMetrics.blogName}</p>
-                        </th>
-                        <td class="px-6 py-4">
-                            {blogPostMetrics.uniqueVisit || 0}
-                        </td>
-                        <td class="px-6 py-4">
-                            {blogPostMetrics.source && blogPostMetrics.source.email ? blogPostMetrics.source.email : 0}
-                        </td>
-                        <td class="px-6 py-4">
-                            {blogPostMetrics.source && blogPostMetrics.source.direct ? blogPostMetrics.source.direct : 0}
-                        </td>
-                        <td class="px-6 py-4">
-                            {blogPostMetrics.source && blogPostMetrics.source.home ? blogPostMetrics.source.home : 0}
-                        </td>
-                        <td class="px-6 py-4">
-                            {blogPostMetrics.likes || 0}
-                        </td>
-                        <td class="px-6 py-4">
-                            {blogPostMetrics.dislikes || 0}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Blog Post Metrics Visualization</h1>
+                    <div className="mb-8 flex flex-col md:flex-row">
+                        <div className="w-full md:w-1/2 p-4">
+                            <PieChart
+                                title="Likes and Dislikes"
+                                labels={["Likes", "Dislikes"]}
+                                datasets={[
+                                    { 
+                                        label: "# of votes", 
+                                        data: [blogPostMetrics.likes || 0, blogPostMetrics.dislikes || 0],
+                                        backgroundColor: ['rgba(75, 192, 192, 0.3)', 'rgba(255, 99, 132, 0.3)'],
+                                        borderColor: ['rgb(75, 192, 192)', 'rgb(255, 99, 132)'],
+                                        borderWidth: 1
+                                    }
+                                ]}
+                            />
+                        </div>
+                        <div className="w-full md:w-1/2 p-4">
+                            <PieChart
+                                title="Source of visit"
+                                labels={["Home", "Direct", "Email"]}
+                                datasets={[
+                                    { 
+                                        label: "# of visits", 
+                                        data: [
+                                            blogPostMetrics.source && blogPostMetrics.source.home ? blogPostMetrics.source.home : 0,
+                                            blogPostMetrics.source && blogPostMetrics.source.direct ? blogPostMetrics.source.direct : 0,
+                                            blogPostMetrics.source && blogPostMetrics.source.email ? blogPostMetrics.source.email : 0
+                                        ],
+                                        backgroundColor: [
+                                            'rgba(255, 206, 86, 0.3)',
+                                            'rgba(153, 102, 255, 0.3)',
+                                            'rgba(54, 162, 235, 0.3)'
+                                        ],
+                                        borderColor: [
+                                            'rgb(255, 206, 86)', 
+                                            'rgb(153, 102, 255)',
+                                            'rgb(54, 162, 235)'
+                                        ],
+                                        borderWidth: 1
+                                    }
+                                ]}
+                            />
+                        </div>
+                    </div>
+                </div>
+                :
+                <></>
+            }
         </div>
     );
 };
