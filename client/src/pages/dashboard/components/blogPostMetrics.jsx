@@ -37,18 +37,19 @@ const BlogPostMetrics = ({ adminToken }) => {
         let newSortDirection = { key, ascending: true };
 
         if (key === "source") {
-            if (sortDirection.key === key && sortDirection.ascending) {
-                newSortDirection = { key, ascending: false };
-                tempBlogPostMetrics.sort((a, b) => a.source[subkey] - b.source[subkey]);
+            newSortDirection.key = `source-${subkey}`;
+            if (sortDirection.key === `source-${subkey}` && sortDirection.ascending) {
+                newSortDirection.ascending = false;
+                tempBlogPostMetrics.sort((a, b) => (a.source[subkey] ?? 0) - (b.source[subkey] ?? 0));
             } else {
-                tempBlogPostMetrics.sort((a, b) => b.source[subkey] - a.source[subkey]);
+                tempBlogPostMetrics.sort((a, b) => (b.source[subkey] ?? 0) - (a.source[subkey] ?? 0));
             }
         } else {
             if (sortDirection.key === key && sortDirection.ascending) {
-                newSortDirection = { key, ascending: false };
-                tempBlogPostMetrics.sort((a, b) => a[key] - b[key]);
+                newSortDirection.ascending = false;
+                tempBlogPostMetrics.sort((a, b) => (a[key] ?? 0) - (b[key] ?? 0));
             } else {
-                tempBlogPostMetrics.sort((a, b) => b[key] - a[key]);
+                tempBlogPostMetrics.sort((a, b) => (b[key] ?? 0) - (a[key] ?? 0));
             }
         }
 
@@ -68,7 +69,7 @@ const BlogPostMetrics = ({ adminToken }) => {
                             <div class="flex items-center">
                                 Number of Views
                                 <div 
-                                    onClick={() => sortBlogPostMetrics("visits")}
+                                    onClick={() => sortBlogPostMetrics("uniqueVisit")}
                                 >
                                     <SortButtonIcon />
                                 </div>
@@ -137,22 +138,22 @@ const BlogPostMetrics = ({ adminToken }) => {
                                     </Link>
                                 </th>
                                 <td class="px-6 py-4">
-                                    {item.uniqueVisit}
+                                    {item.uniqueVisit || 0}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {item.source.email}
+                                    {item.source.email || 0}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {item.source.direct}
+                                    {item.source.direct || 0}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {item.source.home}
+                                    {item.source.home || 0}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {item.likes}
+                                    {item.likes || 0}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {item.dislikes}
+                                    {item.dislikes || 0}
                                 </td>
                             </tr>    
                         )
