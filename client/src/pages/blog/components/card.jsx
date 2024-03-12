@@ -52,7 +52,7 @@ const Card = ({ blogId, title, author, category, time, content, imageFileName })
                     <p className="mb-1 text-sm text-blue-500">{author}</p>&nbsp;&nbsp;
                     <p className="mb-1 text-sm text-gray-500">{time}</p>
                 </div>
-                <p className="mb-3 font-normal text-black-400 max-h-36 overflow-hidden">{content}</p>
+                <p className="mb-3 font-normal text-black-400 max-h-36 overflow-hidden" dangerouslySetInnerHTML={{ __html: content }}></p>
                 <a href={`/blog/${blogId || ""}?source=home`} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                     Read more
                     <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">

@@ -178,12 +178,8 @@ const Page = () => {
                             )}
                         </>
                     }
-
-                    <p className="mb-8 text-justify text-gray-500 whitespace-pre-line">
-                        {postDetails.content}
-                    </p>
+                    <p className="mb-8 text-justify text-gray-500 whitespace-pre-line" dangerouslySetInnerHTML={{ __html: postDetails.content }}></p>
                     <LikeDislike blogId={router.query.slug}/>
-
                 </>
                 :
                 <></>

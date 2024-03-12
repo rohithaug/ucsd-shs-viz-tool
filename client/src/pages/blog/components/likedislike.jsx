@@ -33,20 +33,19 @@ const LikeDislike = (props) => {
         }
     }
 
-  return (
-    <div style={{'display': 'flex', 'justify-content': 'flex-end'}}>
-        <div style={{paddingRight: '20px', borderRight: '1px black solid', display: 'flex', alignItems: 'center'}} className='text-gray-500'>
-            Feedback
+    return (
+        <div className="flex justify-end mb-8">
+            <div className="pr-4 border-r border-black flex items-center text-gray-500">
+                Feedback
+            </div>
+            <button className="ml-4 mr-3" onClick={handleLikeClick}>
+                <LikeButtonIcon color={likeClicked ? 'green' : 'black'} />
+            </button>
+            <button className="ml-3 mr-2" onClick={handleDislikeClick}>
+                <DislikeButtonIcon color={dislikeClicked ? 'red' : 'black'} />
+            </button>
         </div>
-        <button style={{marginLeft: '20px', marginRight: '15px'}} onClick={handleLikeClick}>
-            <LikeButtonIcon color={likeClicked? 'green' : 'black'} />
-        </button>
-        <button style={{marginLeft: '15px', marginRight: '10px'}} onClick={handleDislikeClick}>
-            <DislikeButtonIcon color={dislikeClicked? 'red' : 'black'} />
-        </button>
-        
-    </div>
-  );
+    );
 };
 
 export default LikeDislike;
