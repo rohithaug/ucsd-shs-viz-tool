@@ -7,6 +7,7 @@ import Cookie from 'js-cookie';
 import Layout from '../components/layout';
 import IndivdualBlogPostMetrics from '../components/individualBlogPostMetrics';
 import PieChart from '../components/charts/pieChart';
+import Breadcrumb from '../components/breadcrumb';
 export default function Page() {
     const router = useRouter();
     const adminToken = Cookie.get('token') || null;
@@ -88,6 +89,9 @@ export default function Page() {
         <div>
             {blogPostMetrics ?
                 <div>
+                    <Breadcrumb postTitle={blogPostMetrics.blogName} />
+
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Blog Post Metrics</h1>
                     <IndivdualBlogPostMetrics 
                         blogPostMetrics={blogPostMetrics}
                     />
