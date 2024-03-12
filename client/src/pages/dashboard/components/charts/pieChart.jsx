@@ -10,53 +10,34 @@ ChartJS.register(
     ArcElement, Tooltip, Legend
 );
 
-const COLORS = ["#333333",  
-"#4CAF50",  
-"#2196F3", 
-"#FF9800", 
-"#F44336", 
-"#9C27B0",
-"#03A9F4",
-"#7F8C8D",
-"#FFEB3B", 
-"#C2C2F0",
-];
-
-
 const PieChart = ({ title, labels, datasets }) => {
-    console.log(labels, datasets);
-
     const options = {
         responsive: true,
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    font: {
+                        size: 14
+                    }                        
+                }
             },
             title: {
                 display: true,
                 text: title,
+                font: {
+                    size: 18
+                }
             },
         },
     };
 
     const data = {
         labels,
-        datasets: [
-            {
-                label: 'Likes',
-                data: datasets ? datasets[0].data : [],
-                backgroundColor: COLORS.slice(0, labels?.length),
-                borderColor: 'rgb(54, 162, 235)'
-            }
-        ],
+        datasets
     };
 
-    return (
-    <div >
-        <Pie options={options} data={data} />
-    </div>
-    );
-
+    return <Pie options={options} data={data} />
 }
 
 export default PieChart;

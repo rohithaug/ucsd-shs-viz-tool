@@ -6,7 +6,6 @@ import Cookie from 'js-cookie';
 // IMPORT COMPONENTS
 import Layout from './components/layout';
 import BarChart from './components/charts/barChart';
-import PieChart from './components/charts/pieChart';
 import BlogPostMetrics from './components/blogPostMetrics'; 
 
 export default function Page() {
@@ -99,9 +98,9 @@ export default function Page() {
             {dashboardMetrics && dashboardMetrics.uniqueVisit?.blog ?
                 <div>
                     <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Blog Post Metrics</h1>
-                    <BlogPostMetrics />
+                    <BlogPostMetrics adminToken={adminToken}/>
 
-                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Unique visits to each blog page</h1>
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Blog Post Metrics Visualization</h1>
                     <BarChart 
                         title="Unique visits to each blog page"
                         labels={dashboardMetrics?.uniqueVisit?.blog?.map(post => post?.blogId)}
@@ -113,6 +112,7 @@ export default function Page() {
                             }
                         ]}
                     />
+                    <br />
                     <BarChart
                         title="Likes and Dislikes for each blog page"
                         labels={dashboardMetrics?.likes?.map(post => post?.blogId)}
@@ -129,6 +129,7 @@ export default function Page() {
                             }
                         ]}
                     />
+                    <br />
                     <BarChart
                         title="Source of visit for each blog page"
                         labels={dashboardMetrics?.source?.blog?.map(post => post?.blogId)}
@@ -149,8 +150,11 @@ export default function Page() {
                                 borderColor: 'rgb(54, 162, 235)'                                
                             }
                         ]}
+                        className="mb-8"
                     />
-                    <div style={{display: 'flex'}}>
+                    <br />
+                    {/* ADDED THIS AS BAR CHART ABOVE */}
+                    {/* <div style={{display: 'flex'}}>
                         <div style={{display: 'block', flex: 1}}>
                             <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Likes for each blog page</h1>
                             <PieChart
@@ -167,15 +171,30 @@ export default function Page() {
                                 datasets={[{ label: "Dislikes", data: dashboardMetrics?.dislikes?.map(post => post?.count) }]}
                             />
                         </div>
-                    </div>
-                    <div style={{display: 'block', flex: 1}}>
+                    </div> */}
+
+                    <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Category Wise Metrics Visualization</h1>
+                    <BarChart 
+                        title="Unique visits to each category"
+                        labels={dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.blogId)}
+                        datasets={[
+                            { 
+                                label: "Unique Visits", data: dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.count),
+                                backgroundColor: 'rgba(54, 162, 235, 0.3)',
+                                borderColor: 'rgb(54, 162, 235)'
+                            }
+                        ]}
+                        className="mb-8"
+                    />
+                    {/* ADDED THIS AS BAR CHART ABOVE */}
+                    {/* <div style={{display: 'block', flex: 1}}>
                         <h1 className="text-3xl mb-4 font-normal tracking-tight text-gray-900">Category wise Views</h1>
                         <PieChart
                             title="Views for each category"
                             labels={dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.blogId)}
                             datasets={[{ label: "Views", data: dashboardMetrics?.uniqueVisit?.category?.map(cat => cat?.count) }]}
                         />
-                    </div>
+                    </div> */}
                 </div>
                 :
                 <></>

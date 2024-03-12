@@ -24,20 +24,31 @@ const generateRandomColor = () => {
     return '#' + Math.floor(Math.random() * 16777215).toString(16);
 };
 
-const BarChart = ({ title, labels, datasets }) => {
-    console.log(labels, datasets);
-
+const BarChart = ({ title, labels, datasets, ...props }) => {
     const options = {
         responsive: true,
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    font: {
+                        size: 14
+                    }                        
+                }
             },
             title: {
                 display: true,
                 text: title,
+                font: {
+                    size: 18
+                }
             },
         },
+        scale: {
+            ticks: {
+                precision: 0
+            }
+        }
     };
 
     const data = {
@@ -50,7 +61,7 @@ const BarChart = ({ title, labels, datasets }) => {
         }))
     };
 
-    return <Bar options={options} data={data} />;
+    return <Bar options={options} data={data} {...props} />;
 }
 
 export default BarChart;
