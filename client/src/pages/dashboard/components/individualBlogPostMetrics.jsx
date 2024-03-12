@@ -46,25 +46,25 @@ const IndivdualBlogPostMetrics = ({ blogPostMetrics }) => {
                 <tbody>
                     <tr class="bg-white border-b">
                         <th scope="row" class="px-6 py-4">
-                            <p class="font-medium text-gray-900 whitespace-nowrap">{blogPostMetrics.blogName}</p>
+                            <p class="font-medium text-gray-900 whitespace-nowrap">{blogPostMetrics?.blogName || ""}</p>
                         </th>
                         <td class="px-6 py-4">
-                            {blogPostMetrics.uniqueVisit || 0}
+                            {blogPostMetrics?.uniqueVisit || 0}
                         </td>
                         <td class="px-6 py-4">
-                            {blogPostMetrics.source && blogPostMetrics.source.email ? blogPostMetrics.source.email : 0}
+                            {blogPostMetrics?.source && blogPostMetrics?.source.email ? blogPostMetrics?.source.email : 0}
                         </td>
                         <td class="px-6 py-4">
-                            {blogPostMetrics.source && blogPostMetrics.source.direct ? blogPostMetrics.source.direct : 0}
+                            {blogPostMetrics?.source && blogPostMetrics?.source.direct ? blogPostMetrics?.source.direct : 0}
                         </td>
                         <td class="px-6 py-4">
-                            {blogPostMetrics.source && blogPostMetrics.source.home ? blogPostMetrics.source.home : 0}
+                            {blogPostMetrics?.source && blogPostMetrics?.source.home ? blogPostMetrics?.source.home : 0}
                         </td>
                         <td class="px-6 py-4">
-                            {blogPostMetrics.likes || 0}
+                            {blogPostMetrics?.likes || 0}
                         </td>
                         <td class="px-6 py-4">
-                            {blogPostMetrics.dislikes || 0}
+                            {blogPostMetrics?.dislikes || 0}
                         </td>
                     </tr>
                 </tbody>

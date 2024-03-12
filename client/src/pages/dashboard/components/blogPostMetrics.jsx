@@ -129,9 +129,9 @@ const BlogPostMetrics = ({ adminToken }) => {
                 </thead>
 
                 <tbody>
-                    {blogPostMetrics.map(item => {
+                    {blogPostMetrics.map((item, idx) => {
                         return (
-                            <tr className="bg-white border-b">
+                            <tr key={idx} class="bg-white border-b">
                                 <th scope="row" className="px-6 py-4">
                                     <Link href={`/dashboard/${item.blogId}`}>
                                         <p className="font-medium text-blue-600 whitespace-nowrap hover:text-blue-900 hover:underline">{item.blogName}</p>
